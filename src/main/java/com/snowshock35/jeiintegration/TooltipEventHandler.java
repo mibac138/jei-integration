@@ -52,7 +52,7 @@ import static net.minecraftforge.common.ForgeHooks.getBurnTime;
 
 public class TooltipEventHandler {
 
-    private final Config.Client config = Config.CLIENT;
+    private static final Config.Client config = Config.CLIENT;
 
     private static boolean isDebugMode() {
         return Minecraft.getInstance().options.advancedItemTooltips;
@@ -60,7 +60,7 @@ public class TooltipEventHandler {
 
     private static boolean isShiftKeyDown() {
         return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT) ||
-                InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_RIGHT_SHIFT);
+            InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
 
     private void registerTooltip(ItemTooltipEvent e, Component tooltip, String configOption) {
@@ -69,19 +69,19 @@ public class TooltipEventHandler {
         if (Objects.equals(configOption, "enabled")) {
             isEnabled = true;
         } else if (
-                Objects.equals(configOption, "onShift")
-                        && isShiftKeyDown()
+            Objects.equals(configOption, "onShift")
+                && isShiftKeyDown()
         ) {
             isEnabled = true;
         } else if (
-                Objects.equals(configOption, "onDebug")
-                        && isDebugMode()
+            Objects.equals(configOption, "onDebug")
+                && isDebugMode()
         ) {
             isEnabled = true;
         } else if (
-                Objects.equals(configOption, "onShiftAndDebug")
-                        && isShiftKeyDown()
-                        && isDebugMode()
+            Objects.equals(configOption, "onShiftAndDebug")
+                && isShiftKeyDown()
+                && isDebugMode()
         ) {
             isEnabled = true;
         }
@@ -111,7 +111,7 @@ public class TooltipEventHandler {
         Item item = itemStack.getItem();
 
         // If item stack empty do nothing
-        if (e.getItemStack().isEmpty()) {
+        if (itemStack.isEmpty()) {
             return;
         }
 
@@ -125,9 +125,10 @@ public class TooltipEventHandler {
 
         if (burnTime > 0) {
             Component burnTooltip = Component.translatable("tooltip.jeiintegration.burnTime")
-                    .append(Component.literal(" " + DECIMAL_FORMAT.get().format(burnTime) + " "))
-                    .append(Component.translatable("tooltip.jeiintegration.burnTime.suffix"))
-                    .withStyle(ChatFormatting.DARK_GRAY);
+                                             .append(Component.literal(" " + DECIMAL_FORMAT.get()
+                                                                                           .format(burnTime) + " "))
+                                             .append(Component.translatable("tooltip.jeiintegration.burnTime.suffix"))
+                                             .withStyle(ChatFormatting.DARK_GRAY);
 
             registerTooltip(e, burnTooltip, config.burnTimeTooltipMode.get());
         }
@@ -137,8 +138,8 @@ public class TooltipEventHandler {
         int currentDamage = maxDamage - itemStack.getDamageValue();
         if (maxDamage > 0) {
             Component durabilityTooltip = Component.translatable("tooltip.jeiintegration.durability")
-                    .append(Component.literal(" " + currentDamage + "/" + maxDamage))
-                    .withStyle(ChatFormatting.DARK_GRAY);
+                                                   .append(Component.literal(" " + currentDamage + "/" + maxDamage))
+                                                   .withStyle(ChatFormatting.DARK_GRAY);
 
             registerTooltip(e, durabilityTooltip, config.durabilityTooltipMode.get());
         }
@@ -147,8 +148,8 @@ public class TooltipEventHandler {
         int enchantability = item.getEnchantmentValue(itemStack);
         if (enchantability > 0) {
             Component enchantabilityTooltip = Component.translatable("tooltip.jeiintegration.enchantability")
-                    .append(Component.literal(" " + enchantability))
-                    .withStyle(ChatFormatting.DARK_GRAY);
+                                                       .append(Component.literal(" " + enchantability))
+                                                       .withStyle(ChatFormatting.DARK_GRAY);
 
             registerTooltip(e, enchantabilityTooltip, config.enchantabilityTooltipMode.get());
         }
@@ -160,10 +161,10 @@ public class TooltipEventHandler {
             float satVal = healVal * (foodProperties.getSaturationModifier() * 2);
 
             Component foodTooltip = Component.translatable("tooltip.jeiintegration.hunger")
-                    .append(Component.literal(" " + healVal + " "))
-                    .append(Component.translatable("tooltip.jeiintegration.saturation"))
-                    .append(Component.literal(" " + DECIMAL_FORMAT.get().format(satVal)))
-                    .withStyle(ChatFormatting.DARK_GRAY);
+                                             .append(Component.literal(" " + healVal + " "))
+                                             .append(Component.translatable("tooltip.jeiintegration.saturation"))
+                                             .append(Component.literal(" " + DECIMAL_FORMAT.get().format(satVal)))
+                                             .withStyle(ChatFormatting.DARK_GRAY);
 
             registerTooltip(e, foodTooltip, config.foodTooltipMode.get());
         }
@@ -172,26 +173,26 @@ public class TooltipEventHandler {
         CompoundTag nbtData = item.getShareTag(itemStack);
         if (nbtData != null) {
             Component nbtTooltip = Component.translatable("tooltip.jeiintegration.nbtTagData")
-                    .append(Component.literal(" " + nbtData))
-                    .withStyle(ChatFormatting.DARK_GRAY);
+                                            .append(Component.literal(" " + nbtData))
+                                            .withStyle(ChatFormatting.DARK_GRAY);
 
             registerTooltip(e, nbtTooltip, config.nbtTooltipMode.get());
         }
 
         // Tooltip - Registry Name
         Component registryTooltip = Component.translatable("tooltip.jeiintegration.registryName")
-                .append(Component.literal(" " + ForgeRegistries.ITEMS.getKey(item)))
-                .withStyle(ChatFormatting.DARK_GRAY);
+                                             .append(Component.literal(" " + ForgeRegistries.ITEMS.getKey(item)))
+                                             .withStyle(ChatFormatting.DARK_GRAY);
 
         registerTooltip(e, registryTooltip, config.registryNameTooltipMode.get());
 
 
         // Tooltip - Max Stack Size
-        int stackSize = e.getItemStack().getMaxStackSize();
+        int stackSize = itemStack.getMaxStackSize();
         if (stackSize > 0) {
             Component stackSizeTooltip = Component.translatable("tooltip.jeiintegration.maxStackSize")
-                    .append(Component.literal(" " + itemStack.getMaxStackSize()))
-                    .withStyle(ChatFormatting.DARK_GRAY);
+                                                  .append(Component.literal(" " + itemStack.getMaxStackSize()))
+                                                  .withStyle(ChatFormatting.DARK_GRAY);
 
             registerTooltip(e, stackSizeTooltip, config.maxStackSizeTooltipMode.get());
         }
@@ -199,7 +200,7 @@ public class TooltipEventHandler {
         // Tooltip - Tags
         if (!itemStack.getTags().toList().isEmpty()) {
             Component tagsTooltip = Component.translatable("tooltip.jeiintegration.tags")
-                    .withStyle(ChatFormatting.DARK_GRAY);
+                                             .withStyle(ChatFormatting.DARK_GRAY);
 
             Set<Component> tags = new HashSet<>();
 
@@ -213,8 +214,8 @@ public class TooltipEventHandler {
 
         // Tooltip - Translation Key
         Component translationKeyTooltip = Component.translatable("tooltip.jeiintegration.translationKey")
-                .append(Component.literal(" " + itemStack.getDescriptionId()))
-                .withStyle(ChatFormatting.DARK_GRAY);
+                                                   .append(Component.literal(" " + itemStack.getDescriptionId()))
+                                                   .withStyle(ChatFormatting.DARK_GRAY);
 
         registerTooltip(e, translationKeyTooltip, config.translationKeyTooltipMode.get());
     }

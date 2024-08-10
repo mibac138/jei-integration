@@ -39,19 +39,23 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(JEIIntegration.MOD_ID)
 public class JEIIntegration {
-  public static final String MOD_ID = "jeiintegration";
+    public static final String MOD_ID = "jeiintegration";
 
-  public static Logger logger = LogManager.getLogger();;
+    public static final Logger logger = LogManager.getLogger();
 
-  public JEIIntegration() {
-    ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
-    FMLJavaModLoadingContext.get().getModEventBus().register(Config.class);
+    public JEIIntegration() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
+        FMLJavaModLoadingContext.get().getModEventBus().register(Config.class);
 
-    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-      MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
-    });
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
+        });
 
-    //Make sure the mod being absent on the other network side does not cause the client to display the server as incompatible
-    ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
-  }
+        // Make sure the mod being absent on the other network side does not cause the client to display the server as
+        // incompatible
+        ModLoadingContext
+            .get()
+            .registerExtensionPoint(IExtensionPoint.DisplayTest.class,
+                () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
+    }
 }
