@@ -20,8 +20,7 @@ public class NbtDataModule implements TooltipModule {
     public void apply(ItemTooltipEvent e) {
         CompoundTag nbtData = e.getItemStack().getShareTag();
         if (nbtData != null) {
-            Component nbtTooltip = Component.translatable("tooltip.jeiintegration.nbtTagData")
-                                            .append(Component.literal(" " + nbtData))
+            Component nbtTooltip = Component.translatable("tooltip.jeiintegration.nbtTagData", nbtData)
                                             .withStyle(ChatFormatting.DARK_GRAY);
             e.getToolTip().add(nbtTooltip);
         }

@@ -22,8 +22,7 @@ public class DurabilityModule implements TooltipModule {
         int maxDamage = itemStack.getMaxDamage();
         int currentDamage = maxDamage - itemStack.getDamageValue();
         if (maxDamage > 0) {
-            Component durabilityTooltip = Component.translatable("tooltip.jeiintegration.durability")
-                                                   .append(Component.literal(" " + currentDamage + "/" + maxDamage))
+            Component durabilityTooltip = Component.translatable("tooltip.jeiintegration.durability", currentDamage, maxDamage)
                                                    .withStyle(ChatFormatting.DARK_GRAY);
             e.getToolTip().add(durabilityTooltip);
         }

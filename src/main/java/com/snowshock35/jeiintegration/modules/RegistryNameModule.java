@@ -18,8 +18,7 @@ public class RegistryNameModule implements TooltipModule {
 
     @Override
     public void apply(ItemTooltipEvent e) {
-        Component registryTooltip = Component.translatable("tooltip.jeiintegration.registryName")
-                                             .append(Component.literal(" " + ForgeRegistries.ITEMS.getKey(e.getItemStack().getItem())))
+        Component registryTooltip = Component.translatable("tooltip.jeiintegration.registryName", ForgeRegistries.ITEMS.getKey(e.getItemStack().getItem()))
                                              .withStyle(ChatFormatting.DARK_GRAY);
         e.getToolTip().add(registryTooltip);
     }

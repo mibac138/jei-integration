@@ -19,8 +19,7 @@ public class EnchantabilityModule implements TooltipModule {
     public void apply(ItemTooltipEvent e) {
         int enchantability = e.getItemStack().getEnchantmentValue();
         if (enchantability > 0) {
-            Component enchantabilityTooltip = Component.translatable("tooltip.jeiintegration.enchantability")
-                                                       .append(Component.literal(" " + enchantability))
+            Component enchantabilityTooltip = Component.translatable("tooltip.jeiintegration.enchantability", enchantability)
                                                        .withStyle(ChatFormatting.DARK_GRAY);
             e.getToolTip().add(enchantabilityTooltip);
         }

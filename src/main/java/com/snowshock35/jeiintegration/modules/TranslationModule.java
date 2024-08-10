@@ -18,8 +18,7 @@ public class TranslationModule implements TooltipModule {
 
     @Override
     public void apply(ItemTooltipEvent e) {
-        Component translationKeyTooltip = Component.translatable("tooltip.jeiintegration.translationKey")
-                                                   .append(Component.literal(" " + e.getItemStack().getDescriptionId()))
+        Component translationKeyTooltip = Component.translatable("tooltip.jeiintegration.translationKey", e.getItemStack().getDescriptionId())
                                                    .withStyle(ChatFormatting.DARK_GRAY);
         e.getToolTip().add(translationKeyTooltip);
     }

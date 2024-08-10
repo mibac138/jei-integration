@@ -44,9 +44,7 @@ public class BurnTimeModule implements TooltipModule {
         }
 
         Component burnTooltip =
-            Component.translatable("tooltip.jeiintegration.burnTime")
-                     .append(Component.literal(" " + DECIMAL_FORMAT.get().format(burnTime) + " "))
-                     .append(Component.translatable("tooltip.jeiintegration.burnTime.suffix"))
+            Component.translatable("tooltip.jeiintegration.burnTime", DECIMAL_FORMAT.get().format(burnTime))
                      .withStyle(ChatFormatting.DARK_GRAY);
         e.getToolTip().add(burnTooltip);
     }

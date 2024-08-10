@@ -19,8 +19,7 @@ public class MaxStackSizeModule implements TooltipModule {
     public void apply(ItemTooltipEvent e) {
         int stackSize = e.getItemStack().getMaxStackSize();
         if (stackSize > 0) {
-            Component stackSizeTooltip = Component.translatable("tooltip.jeiintegration.maxStackSize")
-                                                  .append(Component.literal(" " + stackSize))
+            Component stackSizeTooltip = Component.translatable("tooltip.jeiintegration.maxStackSize", stackSize)
                                                   .withStyle(ChatFormatting.DARK_GRAY);
             e.getToolTip().add(stackSizeTooltip);
         }

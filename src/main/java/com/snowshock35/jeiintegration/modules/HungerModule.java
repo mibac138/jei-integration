@@ -34,10 +34,8 @@ public class HungerModule implements TooltipModule {
             int healVal = foodProperties.getNutrition();
             float satVal = healVal * (foodProperties.getSaturationModifier() * 2);
 
-            Component foodTooltip = Component.translatable("tooltip.jeiintegration.hunger")
-                                             .append(Component.literal(" " + healVal + " "))
-                                             .append(Component.translatable("tooltip.jeiintegration.saturation"))
-                                             .append(Component.literal(" " + DECIMAL_FORMAT.get().format(satVal)))
+            Component foodTooltip = Component.translatable("tooltip.jeiintegration.hunger", healVal)
+                                             .append(Component.translatable("tooltip.jeiintegration.saturation", DECIMAL_FORMAT.get().format(satVal)))
                                              .withStyle(ChatFormatting.DARK_GRAY);
             e.getToolTip().add(foodTooltip);
         }
