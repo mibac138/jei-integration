@@ -31,37 +31,31 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.List;
-
 public class Config {
     private static final String CATEGORY_HANDLERS = "Handler Settings";
     private static final String CATEGORY_TOOLTIPS = "Tooltip Settings";
     private static final String CATEGORY_MISCELLANEOUS = "Miscellaneous Settings";
 
-    private static final String defaultBurnTimeTooltipMode = "disabled";
-    private static final String defaultDurabilityTooltipMode = "disabled";
-    private static final String defaultEnchantabilityTooltipMode = "disabled";
-    private static final String defaultFoodTooltipMode = "disabled";
-    private static final String defaultMaxStackSizeTooltipMode = "disabled";
-    private static final String defaultNbtTooltipMode = "disabled";
-    private static final String defaultRegistryNameTooltipMode = "disabled";
-    private static final String defaultTagsTooltipMode = "disabled";
-    private static final String defaultTranslationKeyTooltipMode = "disabled";
-
-    private static final List<String> validOptions = List.of(
-        "disabled", "enabled", "onShift", "onDebug", "onShiftAndDebug"
-    );
+    private static final OptionState defaultBurnTimeTooltipMode = OptionState.DISABLED;
+    private static final OptionState defaultDurabilityTooltipMode = OptionState.DISABLED;
+    private static final OptionState defaultEnchantabilityTooltipMode = OptionState.DISABLED;
+    private static final OptionState defaultFoodTooltipMode = OptionState.DISABLED;
+    private static final OptionState defaultMaxStackSizeTooltipMode = OptionState.DISABLED;
+    private static final OptionState defaultNbtTooltipMode = OptionState.DISABLED;
+    private static final OptionState defaultRegistryNameTooltipMode = OptionState.DISABLED;
+    private static final OptionState defaultTagsTooltipMode = OptionState.DISABLED;
+    private static final OptionState defaultTranslationKeyTooltipMode = OptionState.DISABLED;
 
     public static class Client {
-        public final ConfigValue<String> burnTimeTooltipMode;
-        public final ConfigValue<String> durabilityTooltipMode;
-        public final ConfigValue<String> enchantabilityTooltipMode;
-        public final ConfigValue<String> foodTooltipMode;
-        public final ConfigValue<String> maxStackSizeTooltipMode;
-        public final ConfigValue<String> nbtTooltipMode;
-        public final ConfigValue<String> registryNameTooltipMode;
-        public final ConfigValue<String> tagsTooltipMode;
-        public final ConfigValue<String> translationKeyTooltipMode;
+        public final ConfigValue<OptionState> burnTimeTooltipMode;
+        public final ConfigValue<OptionState> durabilityTooltipMode;
+        public final ConfigValue<OptionState> enchantabilityTooltipMode;
+        public final ConfigValue<OptionState> foodTooltipMode;
+        public final ConfigValue<OptionState> maxStackSizeTooltipMode;
+        public final ConfigValue<OptionState> nbtTooltipMode;
+        public final ConfigValue<OptionState> registryNameTooltipMode;
+        public final ConfigValue<OptionState> tagsTooltipMode;
+        public final ConfigValue<OptionState> translationKeyTooltipMode;
 
         Client(ForgeConfigSpec.Builder builder) {
             builder.comment(CATEGORY_HANDLERS)
@@ -79,62 +73,53 @@ public class Config {
             builder.comment(CATEGORY_TOOLTIPS)
                    .comment(" Tooltip Options")
                    .comment(" Configure the options below to one of the following: " +
-                       "disabled, enabled, onShift, onDebug or onShiftAndDebug")
+                       "disabled, enabled, on_shift, on_debug or on_shift_and_debug")
                    .push("tooltip_options");
 
             burnTimeTooltipMode = builder
                 .comment(" Configure tooltip for burn time.")
                 .translation("config.jeiintegration.tooltips.burnTimeTooltipMode")
-                .define("burnTimeTooltipMode", defaultBurnTimeTooltipMode,
-                    o -> o instanceof String string && validOptions.contains(string));
+                .defineEnum("burnTimeTooltipMode", defaultBurnTimeTooltipMode);
 
             durabilityTooltipMode = builder
                 .comment(" Configure tooltip for durability.")
                 .translation("config.jeiintegration.tooltips.durabilityTooltipMode")
-                .define("durabilityTooltipMode", defaultDurabilityTooltipMode,
-                    o -> o instanceof String string && validOptions.contains(string));
+                .defineEnum("durabilityTooltipMode", defaultDurabilityTooltipMode);
 
             enchantabilityTooltipMode = builder
                 .comment(" Configure tooltip for enchantability")
                 .translation("config.jeiintegration.tooltips.enchantabilityTooltipMode")
-                .define("enchantabilityTooltipMode", defaultEnchantabilityTooltipMode,
-                    o -> o instanceof String string && validOptions.contains(string));
+                .defineEnum("enchantabilityTooltipMode", defaultEnchantabilityTooltipMode);
 
             foodTooltipMode = builder
                 .comment(" Configure tooltip for hunger and saturation.")
                 .translation("config.jeiintegration.tooltips.foodTooltipMode")
-                .define("foodTooltipMode", defaultFoodTooltipMode,
-                    o -> o instanceof String string && validOptions.contains(string));
+                .defineEnum("foodTooltipMode", defaultFoodTooltipMode);
 
             maxStackSizeTooltipMode = builder
                 .comment(" Configure tooltip for max stack size.")
                 .translation("config.jeiintegration.tooltips.maxStackSizeTooltipMode")
-                .define("maxStackSizeTooltipMode", defaultMaxStackSizeTooltipMode,
-                    o -> o instanceof String string && validOptions.contains(string));
+                .defineEnum("maxStackSizeTooltipMode", defaultMaxStackSizeTooltipMode);
 
             nbtTooltipMode = builder
                 .comment(" Configure tooltip for NBT data.")
                 .translation("config.jeiintegration.tooltips.nbtTooltipMode")
-                .define("nbtTooltipMode", defaultNbtTooltipMode,
-                    o -> o instanceof String string && validOptions.contains(string));
+                .defineEnum("nbtTooltipMode", defaultNbtTooltipMode);
 
             registryNameTooltipMode = builder
                 .comment(" Configure tooltip for registry name. E.g. minecraft:stone")
                 .translation("config.jeiintegration.tooltips.registryNameTooltipMode")
-                .define("registryNameTooltipMode", defaultRegistryNameTooltipMode,
-                    o -> o instanceof String string && validOptions.contains(string));
+                .defineEnum("registryNameTooltipMode", defaultRegistryNameTooltipMode);
 
             tagsTooltipMode = builder
                 .comment(" Configure tooltip for tags. E.g. forge:ingot, minecraft:planks")
                 .translation("config.jeiintegration.tooltips.tagsTooltipMode")
-                .define("tagsTooltipMode", defaultTagsTooltipMode,
-                    o -> o instanceof String string && validOptions.contains(string));
+                .defineEnum("tagsTooltipMode", defaultTagsTooltipMode);
 
             translationKeyTooltipMode = builder
                 .comment(" Configure tooltip for translation key. E.g. block.minecraft.stone")
                 .translation("config.jeiintegration.tooltips.translationKeyTooltipMode")
-                .define("translationKeyTooltipMode", defaultTranslationKeyTooltipMode,
-                    o -> o instanceof String string && validOptions.contains(string));
+                .defineEnum("translationKeyTooltipMode", defaultTranslationKeyTooltipMode);
 
             builder.pop();
         }

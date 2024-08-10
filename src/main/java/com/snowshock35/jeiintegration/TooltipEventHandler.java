@@ -26,6 +26,7 @@ package com.snowshock35.jeiintegration;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snowshock35.jeiintegration.config.Config;
+import com.snowshock35.jeiintegration.config.OptionState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -63,26 +64,16 @@ public class TooltipEventHandler {
             InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
 
-    private void registerTooltip(ItemTooltipEvent e, Component tooltip, String configOption) {
+    private void registerTooltip(ItemTooltipEvent e, Component tooltip, OptionState configOption) {
         boolean isEnabled = false;
 
-        if (Objects.equals(configOption, "enabled")) {
+        if (configOption == OptionState.ENABLED) {
             isEnabled = true;
-        } else if (
-            Objects.equals(configOption, "onShift")
-                && isShiftKeyDown()
-        ) {
+        } else if (configOption == OptionState.ON_SHIFT && isShiftKeyDown()) {
             isEnabled = true;
-        } else if (
-            Objects.equals(configOption, "onDebug")
-                && isDebugMode()
-        ) {
+        } else if (configOption == OptionState.ON_DEBUG && isDebugMode()) {
             isEnabled = true;
-        } else if (
-            Objects.equals(configOption, "onShiftAndDebug")
-                && isShiftKeyDown()
-                && isDebugMode()
-        ) {
+        } else if (configOption == OptionState.ON_SHIFT_AND_DEBUG && isShiftKeyDown() && isDebugMode()) {
             isEnabled = true;
         }
         if (isEnabled) {
@@ -90,7 +81,7 @@ public class TooltipEventHandler {
         }
     }
 
-    private void registerTooltips(ItemTooltipEvent e, Collection<Component> tooltips, String configValue) {
+    private void registerTooltips(ItemTooltipEvent e, Collection<Component> tooltips, OptionState configValue) {
         for (Component tooltip : tooltips) {
             registerTooltip(e, tooltip, configValue);
         }
