@@ -44,11 +44,12 @@ public class JEIIntegration {
     public static final Logger logger = LogManager.getLogger();
 
     public JEIIntegration() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
-        FMLJavaModLoadingContext.get().getModEventBus().register(Config.class);
+        TooltipModuleManager tooltipModuleManager = TooltipModuleManager.create();
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, tooltipModuleManager.getSpec());
+        FMLJavaModLoadingContext.get().getModEventBus().register(tooltipModuleManager.getConfig());
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
+            MinecraftForge.EVENT_BUS.register(new TooltipEventHandler(tooltipModuleManager));
         });
 
         // Make sure the mod being absent on the other network side does not cause the client to display the server as
