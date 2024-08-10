@@ -52,7 +52,7 @@ import static net.minecraftforge.common.ForgeHooks.getBurnTime;
 
 public class TooltipEventHandler {
 
-    private Config.Client config = Config.CLIENT;
+    private final Config.Client config = Config.CLIENT;
 
     private static boolean isDebugMode() {
         return Minecraft.getInstance().options.advancedItemTooltips;
@@ -96,14 +96,16 @@ public class TooltipEventHandler {
         }
     }
 
+    private final ThreadLocal<DecimalFormat> DECIMAL_FORMAT = ThreadLocal.withInitial(() -> {
+        // Set number formatting to display large numbers more clearly
+        DecimalFormat format = new DecimalFormat("#.##");
+        format.setGroupingUsed(true);
+        format.setGroupingSize(3);
+        return format;
+    });
+
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent e) {
-
-        // Set number formatting to display large numbers more clearly
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        decimalFormat.setGroupingUsed(true);
-        decimalFormat.setGroupingSize(3);
-
         // Retrieve the ItemStack and Item
         ItemStack itemStack = e.getItemStack();
         Item item = itemStack.getItem();
@@ -123,7 +125,7 @@ public class TooltipEventHandler {
 
         if (burnTime > 0) {
             Component burnTooltip = Component.translatable("tooltip.jeiintegration.burnTime")
-                    .append(Component.literal(" " + decimalFormat.format(burnTime) + " "))
+                    .append(Component.literal(" " + DECIMAL_FORMAT.get().format(burnTime) + " "))
                     .append(Component.translatable("tooltip.jeiintegration.burnTime.suffix"))
                     .withStyle(ChatFormatting.DARK_GRAY);
 
@@ -160,7 +162,7 @@ public class TooltipEventHandler {
             Component foodTooltip = Component.translatable("tooltip.jeiintegration.hunger")
                     .append(Component.literal(" " + healVal + " "))
                     .append(Component.translatable("tooltip.jeiintegration.saturation"))
-                    .append(Component.literal(" " + decimalFormat.format(satVal)))
+                    .append(Component.literal(" " + DECIMAL_FORMAT.get().format(satVal)))
                     .withStyle(ChatFormatting.DARK_GRAY);
 
             registerTooltip(e, foodTooltip, config.foodTooltipMode.get());
@@ -195,7 +197,7 @@ public class TooltipEventHandler {
         }
 
         // Tooltip - Tags
-        if (itemStack.getTags().toList().size() > 0) {
+        if (!itemStack.getTags().toList().isEmpty()) {
             Component tagsTooltip = Component.translatable("tooltip.jeiintegration.tags")
                     .withStyle(ChatFormatting.DARK_GRAY);
 
